@@ -9,4 +9,9 @@
     <PackageReference Include="YoutubeExplode.Converter" Version="6.3.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\YoutubeExplode\YoutubeExplode.Converter\YoutubeExplode.Converter.csproj" />
+    <ProjectReference Include="..\..\YoutubeExplode\YoutubeExplode\YoutubeExplode.csproj" />
+  </ItemGroup>
+
 </Project>
