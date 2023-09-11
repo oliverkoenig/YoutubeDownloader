@@ -39,7 +39,7 @@ public class RootViewModel : Screen
 
     private async Task ShowUkraineSupportMessageAsync()
     {
-        if (!_settingsService.IsUkraineSupportMessageEnabled)
+        //if (!_settingsService.IsUkraineSupportMessageEnabled)
             return;
 
         var dialog = _viewModelFactory.CreateMessageBoxViewModel(
