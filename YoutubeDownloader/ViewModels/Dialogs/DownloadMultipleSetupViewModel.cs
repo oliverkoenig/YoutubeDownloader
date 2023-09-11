@@ -77,7 +77,7 @@ public class DownloadMultipleSetupViewModel : DialogScreen<IReadOnlyList<Downloa
                     _settingsService.FileNameTemplate,
                     video,
                     SelectedContainer,
-                    (i + 1).ToString().PadLeft(SelectedVideos.Count.ToString().Length, '0')
+                    (SelectedVideos.Count - i).ToString().PadLeft(SelectedVideos.Count.ToString().Length, '0')
                 )
             );
 
