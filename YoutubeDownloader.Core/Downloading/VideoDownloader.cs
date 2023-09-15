@@ -52,8 +52,12 @@ public class VideoDownloader
             ? (await _youtube.Videos.ClosedCaptions.GetManifestAsync(video.Id, cancellationToken)).Tracks
             : Array.Empty<ClosedCaptionTrackInfo>();
 
+        // we want the UploadDate
+        if (video is not Video)
+            video = await _youtube.Videos.GetAsync(video.Id, cancellationToken);
+
         var directory = Path.GetDirectoryName(filePath) ?? @"C:\temp";
-        var fileName = $"{((Video)video).UploadDate:yyyyMMddHHmmss}_{Path.GetFileName(filePath)}";
+        var fileName = $"{((Video)video).UploadDate:yyyyMMdd}_{Path.GetFileName(filePath)}";
         filePath = Path.Combine(directory, fileName);
 
         var dirPath = Path.GetDirectoryName(filePath);

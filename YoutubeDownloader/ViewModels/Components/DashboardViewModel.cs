@@ -13,6 +13,7 @@ using YoutubeDownloader.Utils;
 using YoutubeDownloader.ViewModels.Dialogs;
 using YoutubeDownloader.ViewModels.Framework;
 using YoutubeExplode.Exceptions;
+using YoutubeExplode.Playlists;
 
 namespace YoutubeDownloader.ViewModels.Components;
 
@@ -168,6 +169,8 @@ public class DashboardViewModel : PropertyChangedBase, IDisposable
         // Small weight so as to not offset any existing download operations
         var progress = _progressMuxer.CreateInput(0.01);
 
+        var timestamp = $"{DateTime.Now:yyMMddHHmmssfff}";
+
         try
         {
             var resolver = new QueryResolver(_settingsService.LastAuthCookies);
@@ -196,6 +199,21 @@ public class DashboardViewModel : PropertyChangedBase, IDisposable
             // Multiple videos
             else if (result.Videos.Count > 1)
             {
+                // TODO: create metadata files
+                foreach (var video in result.Videos)
+                {
+                    if (video is PlaylistVideo playlistVideo)
+                    {
+                        var content = playlistVideo.Content?.ToString();
+                        var directory = $@"c:\temp\VideoDownloader\{timestamp}";
+                        Directory.CreateDirectory(directory);
+                        var fileName = $"[{playlistVideo.Index:D4}]_{playlistVideo.Title}.json";
+                        fileName = string.Join("_", fileName.Split(Path.GetInvalidFileNameChars()));
+                        await File.WriteAllTextAsync(Path.Combine(directory, fileName), content);
+                    }
+                }
+                //return;
+
                 var downloads = await _dialogManager.ShowDialogAsync(
                     _viewModelFactory.CreateDownloadMultipleSetupViewModel(
                         result.Title,
